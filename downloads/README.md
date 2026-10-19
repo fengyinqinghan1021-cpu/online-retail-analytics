@@ -80,20 +80,29 @@ python python/07_validate_powerbi.py
 3. 刷新数据。语义模型通过 Parquet 读取事实表/维度表，避免 CSV 编码与类型问题。
 4. PBIR 报表 JSON 已通过微软官方 Schema 校验；28 个字段/度量引用均已在 TMDL 中核对。
 
-## 发布为 GitHub Pages
+## 项目维护与站点
 
-`docs/` 已整理为可直接上传的静态网页版：页面、图表、Excel、PDF、Power BI 工程包和代码包都在其中。
-
-当前在线地址：
+在线作品集：
 
 <https://fengyinqinghan1021-cpu.github.io/online-retail-analytics/>
 
-1. 把整个项目推送到 GitHub 仓库。
-2. 打开仓库 `Settings → Pages`。
-3. Source 选择 `Deploy from a branch`，Branch 选择 `main`，目录选择 `/docs`。
-4. 保存后得到 `https://<用户名>.github.io/<仓库名>/`。
+`docs/` 是发布到 GitHub Pages 的静态站点目录；当前仓库使用 `main` 分支根目录发布。站点包含页面、图表、Excel、PDF、Power BI 工程包和代码包。
 
-更详细的说明见 `docs/README.md`。
+常用维护命令：
+
+```powershell
+# 重新生成数据、Excel、Power BI 和站点
+.\run_all.ps1
+
+# 单独重建站点与下载包
+python python/12_build_github_pages.py
+
+# 校验站点链接、文件大小和本地 HTTP 访问
+python python/13_check_github_pages.py
+python python/14_smoke_test_pages.py
+```
+
+项目结构、数据流、指标口径和更新流程见 `docs/README.md`。
 
 ## 口径说明
 

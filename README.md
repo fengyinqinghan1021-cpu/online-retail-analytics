@@ -4,8 +4,22 @@
 
 GitHub 仓库：<https://github.com/fengyinqinghan1021-cpu/online-retail-analytics>
 
-使用 UCI 公开数据集 **Online Retail II**（106.7 万行，2009–2011）完成：
-SQL 查询 → Python 清洗与 EDA → Excel 看板 → Power BI 看板 → 5 条业务结论。
+## 项目概览
+
+使用 UCI 公开数据集 **Online Retail II**（106.7 万行，2009-12 至 2011-12），完成从原始交易数据到管理看板的完整分析链路：
+
+**SQL 查询 → Python 清洗与 EDA → Excel / Power BI 看板 → 5 条业务结论**
+
+项目关注四条业务主线：营收与季节性与市场结构、客户价值分层、商品组合与长尾、退货与运营节奏。
+
+## 数据源与口径
+
+- 数据源：[UCI Online Retail II](https://archive.ics.uci.edu/dataset/502/online+retail+ii)
+- 原始数据：1,067,371 行，两张年度工作表，2010-12 有 9 天重叠
+- 清洗后：1,044,527 行；只删除跨表重复，保留同表内可能的真实重复录入
+- 净销售额 = 商品销售金额 − 退货金额；排除运费、手续费、手工调整等特殊 SKU
+- 客户级 RFM 仅覆盖有 Customer ID 的客户；游客订单仍计入整体营收
+- 退货分析同时展示全部退货率与剔除两笔批量退货后的常规退货率
 
 ## 核心指标
 
@@ -15,159 +29,87 @@ SQL 查询 → Python 清洗与 EDA → Excel 看板 → Power BI 看板 → 5 �
 | 有效订单 | 39,516 |
 | 客户数（有 ID） | 5,852 |
 | 全部退货率 | 3.65% |
-| 常规退货率（剔除两笔批量退货） | 2.41% |
+| 常规退货率 | 2.41% |
 | 英国营收占比 | 85.5% |
+| 非英国市场同比 | +15.3% |
+
+## 5 条业务结论
+
+1. **Q4 峰值明确**：22 个完整月份中，11 月净销售额平均为月均的 1.83 倍。
+2. **客户高度集中**：前 1% 客户贡献 31.1% 营收，前 20% 客户贡献 76.7%。
+3. **海外是主要增量**：非英国市场同比 +15.3%，英国仅 +0.4%。
+4. **退货需分层管理**：全部退货率 3.65%；两笔批量退货占退货额 34.1%，剔除后常规退货率 2.41%。
+5. **商品组合呈长尾**：1,038 个 A 类 SKU 贡献 80% 营收，2,430 个 C 类 SKU 仅贡献 5%。
 
 ## 交付物
 
-- [Excel 看板](downloads/online-retail-dashboard.xlsx)
+- [Excel 管理看板](downloads/online-retail-dashboard.xlsx)
 - [项目报告 PDF](downloads/online-retail-report.pdf)
 - [Power BI 工程包](downloads/online-retail-pbip.zip)
 - [SQL + Python 代码包](downloads/online-retail-code.zip)
 
-## 5 条业务结论
-
-1. 11 月是销售峰值，完整月份平均为月均的 1.83 倍。
-2. 前 1% 客户贡献 31.1% 营收，前 20% 客户贡献 76.7%。
-3. 非英国市场同比 +15.3%，英国仅 +0.4%。
-4. 全部退货率 3.65%，剔除两批批量退货后常规退货率 2.41%。
-5. 1,038 个 A 类 SKU 贡献 80% 营收，长尾特征明显。
-
----
-
-## 部署与维护
-
-这份手册对应项目里的 `docs/` 静态站点。当前站点已经发布在
-`https://fengyinqinghan1021-cpu.github.io/online-retail-analytics/`。
-以下步骤用于重新部署或迁移到其他仓库。
-
-## 0. 准备
-
-- 一个 GitHub 账号：<https://github.com/>
-- 浏览器：Chrome / Edge 均可
-- 文件：`retail-analytics-github-pages.zip`（约 10.5 MB）
-
-解压后，顶层应该是：
+## 技术架构
 
 ```text
-index.html
-assets/
-downloads/
-README.md
-.nojekyll
+原始 Excel（两张年度表）
+  → DuckDB SQL：字段画像、跨表去重、清洗抽取
+  → pandas：描述补全、销售/退货拆分、RFM、cohort、ABC
+  → 汇总表（Parquet / CSV）
+  → Excel 看板 + Power BI（TMDL 语义模型 + PBIR 报表）
+  → docs/ 静态站点（GitHub Pages）
 ```
 
-如果看到的是 `retail-analytics-github-pages/index.html` 这种多一层目录的结构，
-请把里面的文件全部上移一层，确保 `index.html` 直接位于仓库根目录。
-
-## 1. 新建 GitHub 仓库
-
-1. 登录 GitHub，点击右上角 `+ → New repository`。
-2. Repository name 填 `online-retail-analytics`。
-3. 选择 `Public`（GitHub Free 的 Pages 建议用公开仓库）。
-4. 不要勾选 “Add a README file”，保持空仓库。
-5. 点击 `Create repository`。
-
-## 2. 上传网页版文件
-
-1. 在仓库首页点击 `uploading an existing file`，或 `Add file → Upload files`。
-2. 打开解压后的文件夹，全选里面的**内容**：
-   `index.html`、`assets`、`downloads`、`README.md`、`.nojekyll`。
-3. 拖到 GitHub 上传区域。
-4. Commit message 填 `Add GitHub Pages portfolio`。
-5. 点击 `Commit changes`。
-
-注意：拖的是文件夹里的内容，不要把外层文件夹整个拖进去；否则首页会变成
-`/online-retail-pages/index.html`，Pages 根目录会找不到 `index.html`。
-
-## 3. 开启 GitHub Pages
-
-1. 进入仓库的 `Settings`。
-2. 左侧点击 `Pages`。
-3. `Build and deployment → Source` 选择 `Deploy from a branch`。
-4. Branch 选择 `main`。
-5. Folder 选择 `/ (root)`。
-6. 点击 `Save`。
-
-等待 1–3 分钟，刷新 Pages 页面。顶部会出现：
+## 项目结构
 
 ```text
-Your site is live at https://<你的用户名>.github.io/online-retail-analytics/
+retail-analytics/
+├─ data/
+│  ├─ raw/                 # 原始 Online Retail II
+│  ├─ processed/           # 清洗后明细、维度、汇总表
+│  └─ query_results/       # SQL 画像结果
+├─ sql/                    # 画像与清洗抽取
+├─ python/                 # 01–14 全流程脚本
+├─ outputs/                # Excel、图表、预览
+├─ reports/                # 项目报告 HTML/PDF
+├─ powerbi/OnlineRetailII/ # PBIP 工程
+└─ docs/                   # GitHub Pages 静态站点
 ```
 
-## 4. 验证
+## 更新与维护
 
-用无痕窗口打开上面的网址，依次检查：
+### 数据更新
 
-- 首页能正常显示；
-- 关键图表图片能加载；
-- `下载 Excel 看板` 能下载 `.xlsx`；
-- `阅读项目报告` 能在浏览器打开 PDF；
-- `下载 Power BI 工程包` 能下载 `.zip`；
-- `下载代码包` 能下载 SQL/Python 源码。
-
-## 5. 更新网站
-
-以后修改内容时：
-
-1. 在仓库点击 `Add file → Upload files`。
-2. 上传同名文件覆盖旧文件。
-3. Commit 后等待 Pages 自动重新构建。
-
-## 6. 常见问题
-
-### 打开是 404
-
-- 确认仓库 `Settings → Pages` 已保存；
-- 确认 Branch 是 `main`，Folder 是 `/ (root)`；
-- 确认仓库根目录直接有 `index.html`；
-- 刚开启 Pages 时等待 1–3 分钟，或到 `Actions` 看构建是否完成。
-
-### 图片不显示
-
-确认 `assets/figures/` 和 `assets/preview/` 已上传，并且文件名大小写一致。
-
-### 下载按钮 404
-
-确认 `downloads/` 目录已上传，里面有：
-
-```text
-online-retail-dashboard.xlsx
-online-retail-report.pdf
-online-retail-pbip.zip
-online-retail-code.zip
+```powershell
+python python/01_ingest.py
+python python/02_sql_pipeline.py --full
+python python/03_clean_eda.py
 ```
 
-### 上传大文件失败
+### 看板更新
 
-GitHub 网页上传对单个大文件有限制。本项目网页版最大文件约 8.7 MB，
-正常不会失败；如果上传完整项目中的原始 Excel，建议改用 GitHub Desktop
-或 Git 命令行。
-
-## 7. 方案 A：上传完整项目
-
-如果希望仓库里保留 SQL、Python、数据和处理过程：
-
-1. 上传整个项目；
-2. `Settings → Pages → main → /docs`；
-3. 访问 `https://<用户名>.github.io/<仓库名>/`。
-
-完整项目包含原始数据和 Parquet 文件，仓库会明显更大；网页版发布推荐方案 B。
-
-## 8. 写进简历
-
-发布成功后，复制网址，例如：
-
-```text
-https://yourname.github.io/online-retail-analytics/
+```powershell
+python python/04_build_excel.py
+python python/06_build_powerbi.py
+python python/07_validate_powerbi.py
 ```
 
-在 Word/WPS 中选中“项目主页”或完整网址，按 `Ctrl + K` 粘贴链接。
-同时保留一行纯文本网址，避免 ATS 系统丢失超链接。
+### 站点更新
+
+```powershell
+python python/08_build_portal.py
+python python/12_build_github_pages.py
+python python/13_check_github_pages.py
+python python/14_smoke_test_pages.py
+```
+
+`docs/` 是 GitHub Pages 的发布目录，当前使用 `main` 分支根目录。重新生成后提交并推送即可触发 Pages 重建。
+
+### 质量门槛
+
+- PBIP 报表 JSON 通过微软官方 Schema 校验；28 个字段/度量引用全部解析到 TMDL。
+- 站点 18 个内部链接可解析，最大单文件低于 GitHub 100 MB 限制。
+- 本地 HTTP 冒烟测试覆盖首页、图表、Excel、PDF、Power BI 包和代码包。
 
 ## 说明
 
-- 本目录是纯静态站点，不需要后端。
-- Power BI 工程包是下载文件；GitHub Pages 不能直接运行 Power BI Desktop。
-- 单个文件均小于 GitHub 100 MB 限制。
-- `.nojekyll` 用于避免 Jekyll 处理带下划线/中文的静态文件。
+项目用于数据分析与作品展示。Power BI 工程包是下载文件，需要 Power BI Desktop 打开；GitHub Pages 只托管静态页面和下载资源。
