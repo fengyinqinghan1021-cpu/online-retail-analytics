@@ -84,6 +84,10 @@ python python/07_validate_powerbi.py
 
 `docs/` 已整理为可直接上传的静态网页版：页面、图表、Excel、PDF、Power BI 工程包和代码包都在其中。
 
+当前在线地址：
+
+<https://fengyinqinghan1021-cpu.github.io/online-retail-analytics/>
+
 1. 把整个项目推送到 GitHub 仓库。
 2. 打开仓库 `Settings → Pages`。
 3. Source 选择 `Deploy from a branch`，Branch 选择 `main`，目录选择 `/docs`。

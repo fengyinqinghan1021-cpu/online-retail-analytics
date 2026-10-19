@@ -1,7 +1,45 @@
-# GitHub Pages 部署步骤
+# Online Retail II | 数据分析作品集
 
-这份手册对应项目里的 `docs/` 静态站点。推荐使用
-`retail-analytics-github-pages.zip` 发布，体积小、上传快；完整项目可以另行备份。
+在线作品集：<https://fengyinqinghan1021-cpu.github.io/online-retail-analytics/>
+
+GitHub 仓库：<https://github.com/fengyinqinghan1021-cpu/online-retail-analytics>
+
+使用 UCI 公开数据集 **Online Retail II**（106.7 万行，2009–2011）完成：
+SQL 查询 → Python 清洗与 EDA → Excel 看板 → Power BI 看板 → 5 条业务结论。
+
+## 核心指标
+
+| 指标 | 数值 |
+|---|---:|
+| 净销售额 | £18.98M |
+| 有效订单 | 39,516 |
+| 客户数（有 ID） | 5,852 |
+| 全部退货率 | 3.65% |
+| 常规退货率（剔除两笔批量退货） | 2.41% |
+| 英国营收占比 | 85.5% |
+
+## 交付物
+
+- [Excel 看板](downloads/online-retail-dashboard.xlsx)
+- [项目报告 PDF](downloads/online-retail-report.pdf)
+- [Power BI 工程包](downloads/online-retail-pbip.zip)
+- [SQL + Python 代码包](downloads/online-retail-code.zip)
+
+## 5 条业务结论
+
+1. 11 月是销售峰值，完整月份平均为月均的 1.83 倍。
+2. 前 1% 客户贡献 31.1% 营收，前 20% 客户贡献 76.7%。
+3. 非英国市场同比 +15.3%，英国仅 +0.4%。
+4. 全部退货率 3.65%，剔除两批批量退货后常规退货率 2.41%。
+5. 1,038 个 A 类 SKU 贡献 80% 营收，长尾特征明显。
+
+---
+
+## 部署与维护
+
+这份手册对应项目里的 `docs/` 静态站点。当前站点已经发布在
+`https://fengyinqinghan1021-cpu.github.io/online-retail-analytics/`。
+以下步骤用于重新部署或迁移到其他仓库。
 
 ## 0. 准备
 
